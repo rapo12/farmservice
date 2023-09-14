@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/template.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#liveAlertBtn").click(function() {
+                $(this).hide(); // Hide the button when clicked
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="row" layout:fragment="content">
+    <button type="button" class="btn btn-success" id="liveAlertBtn" style="width: 50%;margin-left: auto; margin-right: auto;" th:if="${notification != null}" th:text="${notification}"></button>
+
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="display:flex; align-items: center">
+                    <h6 class="text-white text-capitalize ps-3" style="margin:0%; left:30%">Farms</h6>
+                    <button name="addFram" type="button" class="btn btn-success" style="margin:auto;left:33%">
+                        <a class="btn-success" th:href="@{/farms/add}" >Add Farm</a>
+                    </button>
+                    <button name="addUserTofarm" type="button" class="btn btn-success" style="margin:auto;background-color:none;">
+                        <a class="btn-success" th:href="@{/farms/users}">Managed Users</a>
+                    </button>
+                </div>
+
+            </div>
+            <form action="">
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom et Description</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Latitude et longitude</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Area</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Managed Users</th>
+                                <th class="text-secondary opacity-7"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="f:${farms}">
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                            <img th:src="@{/img/farmimage.jpg}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm" th:text="${f.name}"></h6>
+                                            <p class="text-xs text-secondary mb-0" th:text="${f.description}"></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0"  th:text="${f.latitude}"></p>
+                                    <p class="text-xs text-secondary mb-0" th:text="${f.longitude}"></p>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <span class="badge badge-sm bg-gradient-success" th:text="${f.area}"></span>
+                                </td>
+
+
+                                <td>
+                                    <div class="avatar-group mt-2" th:if="${!f.getUsers().isEmpty()}">
+                                        <a href="javascript:;" th:each="user:${f.getUsers()}" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" th:title="${user.getName()}">
+                                            <img th:src="@{/img/team-1.jpg}" alt="team1">
+                                        </a>
+                                    </div>
+                                    <div class="avatar-group mt-2" th:if="${f.getUsers().isEmpty()}">
+                                        <small>No Users in this Farm</small>
+                                    </div>
+                                </td>
+
+                                <td class="align-middle">
+                                    <a th:href="@{/farms/edit/{id}(id=${f.idFarm})}">
+                                        <i class="bi bi-pencil-square" ></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <a th:href="@{/farms/delete/{id}(id=${f.idFarm})}" onclick="javascript:return confirm('Are you sure')">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

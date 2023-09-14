@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/template.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Managed User with farm</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#liveAlertBtn").click(function() {
+                $(this).hide(); // Hide the button when clicked
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="row" layout:fragment="content">
+    <button type="button" class="btn btn-primary" id="liveAlertBtn" style="width: 50%;margin-left: auto; margin-right: auto;" th:if="${notification != null}" th:text="${notification}"></button>
+    <div class="row mb-4">
+        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-lg-6 col-7">
+                            <h6>Farms</h6>
+                            <p class="text-sm mb-0">
+                                <i class="fa fa-check text-info" aria-hidden="true"></i>
+                                <span class="font-weight-bold ms-1">Select a Farm</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-5 my-auto text-end">
+                            <div class="dropdown float-lg-end pe-4">
+                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                            <select class="form-control" id="farm" name="farm" required onchange="hi()">
+                                <option th:id="0" th:value="null">none</option>
+                                <option  th:each="farm:${farms}"  th:value="${farm.idFarm}" th:text="${farm.name}"></option>
+                            </select>
+                        </div>
+                        <script type="text/javascript">
+                            function hi(){
+                                const farmSelect = document.getElementById('farm').value;
+                                const userTableBody = document.getElementById('userTableBody');
+                                fetch(`/farmsrest/users/${farmSelect}`)
+                                    .then(response => response.json())
+                                    .then(users => {
+                                        // Clear existing user table rows
+                                        userTableBody.innerHTML = '';
+
+                                        // Populate the user table with data for the selected farm
+                                        users.forEach(user => {
+                                            const row = document.createElement('tr');
+                                            row.innerHTML = `
+                                            <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                            <img src="/img/team-2.jpg" class="avatar avatar-sm me-3" alt="xd">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">${user.username}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${user.name} </span>
+                                </td>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${user.email} </span>
+                                </td>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${user.phone} </span>
+                                </td>
+                                 <td class="align-middle">
+                                    <a href="userFarm?farmsid=${farmSelect}&user=${user.username}" onclick="javascript:return confirm('Are you sure to delete the user from Farm')">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+
+`;
+                                            userTableBody.appendChild(row);
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching users:', error);
+                                    });
+                                fetch(`/farmsrest/usersnotexist/${farmSelect}`)
+                                    .then(response => response.json())
+                                    .then(data  => {
+                                            const selectElement = document.getElementById("userfarm");
+                                            while (selectElement.options.length > 1) {
+                                                selectElement.remove(1);
+                                            }
+                                            data.forEach(user => {
+                                                const newOption = document.createElement("option");
+                                                newOption.value = user.username; // Set the value attribute
+                                                newOption.text = user.username; // Set the text content
+                                                selectElement.appendChild(newOption);  });
+                                        });
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Full Name</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6>Add User to manage Farm</h6>
+                    <img class="card-img-top" th:src="@{/img/farmimage.jpg}" alt="Card image" style="width:90%">
+                </div>
+                    <div  class="card-header pb-0">
+                        <h6>Farms</h6>
+                        <p class="text-sm mb-0">
+                            <i class="fa fa-check text-info" aria-hidden="true"></i>
+                            <span class="font-weight-bold ms-1">Select a User</span>
+                        </p>
+                    </div>
+
+                    <div class="input-group input-group-static mb-4">
+                        <select class="form-control" id="userfarm" name="farm" required onchange="">
+                            <option th:id="0" th:value="null">none</option>
+                        </select>
+
+
+                    </div>
+
+                    <div class="align-middle">
+                        <a href="#" onclick="myfunc();" >
+                            <button type="submit" class="btn btn-primary"  style="width: 100%;margin-left: auto; margin-right: auto;" >Add farm</button>
+                        </a>
+
+                    </div>
+                <script>
+                    function myfunc() {
+                        var farmSelect = document.getElementById('farm').value;
+                        var userSelected = document.getElementById('userfarm').value;
+
+                        var confirmation = confirm('Are you sure to Add the  user : '+userSelected+' to Farm ?');
+
+                        if (confirmation) {
+                            var url = 'userFarmnotexist?farmsid='+farmSelect+'&user='+userSelected;
+                            window.location.href = url;
+                        }
+                    }
+
+                </script>
+            </div>
+        </div>
+</div>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</html>

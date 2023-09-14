@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap 5 Responsive Landing Page Design</title>
+    <!-- All CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><span class="primary-color">SmartAgri</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#services">Services</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#projects">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#team">Partners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img th:src="@{/img/HomeDesktopheader.jpg}" class="d-block w-100" alt="...">
+            <div class="carousel-caption">
+                <h5>SmartAgri</h5>
+                <p>Smart stand-alone micro-grids as a solution for agriculture farms electrification.</p>
+                <p><a href="#about" class="btn mt-3 text-white primary-bg">Get Started</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- about section starts -->
+<section id="about" class="about section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header text-center pb-5">
+                    <h2>About SmartAgri</h2>
+                    <p>Smart stand-alone micro-grids as a solution <br>for agriculture farms electrification</p>
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Aim of SmartAgri
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        SmartAgri aims to develop smart microgrids based on a Renewable Energy System to support the sustainable development of the energy, water and agriculture sectors.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Background
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Algeria and Morocco have ambitious plans to modernize the agricultural sector with the aims of ensuring food security and growing and diversifying exports. Due to the significant roles of energy and water in the development of agriculture, the attainment of these targets is highly dependent on sustainable development.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
+                        About the project
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        SmartAgri focuses on the development of smart microgrids based on renewable energy sources to support the sustainable development of the three sectors: energy, water and agriculture. The main objective is to adapt the system to the load profile and storage strategies of modern and sustainable agricultural practices and to serve typical requirements such as pumping, irrigating, and cooling. Furthermore, the process between generating, distributing, and storing electricity and water will be optimized by identifying further renewable energy and water sources and using reservoirs and cooling chambers as means for storage. 3 PhD co-supervised thesis subjects will be proposed, as well as the development of 2 reduced-power prototypes (10 kW) which will be installed at the Green Energy Parc (Morocco) and the UDES (Algeria). Both research structures have direct access to farms and will enable the proposed solutions to be deployed and field validated. The project will also create opportunities through local use of the excess energy produced in the microgrid through the different seasons in neighbouring farms or dwellings. The project also will raise awareness of the potential of renewable energy sources across other sectors such as gender and youth inclusion, job and SME creation in rural areas, ICT and electric mobility. The ideal conditions for connecting to the national grid, that would permit injection or different types of grid services, will be explored too.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseTwo">
+                        Expected results
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        The installed Digitized RE Microgrid Smart Storage Systems will have contribute to the development of a data based research and education framework for the integration of smart grids in the MENA region. The project will enhance local capacities for the digitized renewable energy Microgrid Smart Storage Systems to enable the connected farms to increase their production, save water and energy. Expected results include:
+                        <ul>
+                            <li>A Plug&Play concept of microgrids that can be connected or disconnected without intervention or changes to manual settings</li>
+                            <li>Designing the prototypes, the microgrid, the battery, and the data interface (setting up AI, IoT and smart metering for data monitoring and blockchain technology to code the energy packet transactions)</li>
+                            <li>Assessment of the agricultural activities and practices of the pilot farms with focus on energy and water consumption and assessment of the socio economic environment</li>
+                            <li>Analysis of the energy, water and agriculture policies and strategies in Algeria and Morocco</li>
+                            <li>Modelling and designing the optimized energy, water, and material flow within the farm</li>
+                            <li>Validations of power electronics topology, its smart storage and energy management systems</li>
+                            <li>On site (Morocco) validation under real conditions</li>
+                            <li>PhD co supervision 3 PhD thesis, writing journal papers, participate in international conferences</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- services section Ends -->
+
+<!-- projects strats -->
+<section id="projects" class="projects section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header text-center pb-5">
+                    <h2>Projects</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-12 col-lg-4">
+                <div class="card text-light text-center bg-white pb-2 ">
+                    <div class="card-body text-dark">
+                        <div class="img-area mb-4">
+                            <img th:src="@{/img/rimsar.jpg}" class="img-fluid fix-height" alt="">
+                        </div>
+                        <h3 class="card-title mb-3">RIMSAR</h3>
+                        <button class="btn text-white primary-bg">Read More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-4">
+                <div class="card text-light text-center bg-white pb-2">
+                    <div class="card-body text-dark">
+                        <div class="img-area mb-4">
+                            <img th:src="@{/img/blfarm.jpg}" class="img-fluid" alt="">
+                        </div>
+                        <h3 class="card-title mb-3">BLFARM</h3>
+                        <button class="btn text-white primary-bg">Read More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- projects ends -->
+<!-- team starts -->
+<section class="team section-padding" id="team">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header text-center pb-5">
+                    <h2>Sponsors / Partners</h2>
+                    <!-- <p>Lorem ipsum dolor sit amet, consectetur <br>adipisicing elit. Non, quo.</p> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img th:src="@{/img/leap_logo.png}" alt="" class="rounded-circle img-spon">
+                        <h3 class="card-title py-2">LEAP-RE (SPONSOR)</h3>
+                        <p>
+                            <a href="https://www.leap-re.eu/" class="btn text-white primary-bg" target="_blank">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img th:src="@{/img/uir_logo.png}" alt="" class="rounded-circle img-spon">
+                        <h3 class="card-title py-2">International University of Rabat</h3>
+                        <p>
+                            <a href="https://www.uir.ac.ma/" class="btn text-white primary-bg" target="_blank">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img th:src="@{/img/gep_logo.png}" alt="" class="rounded-circle img-spon">
+                        <h3 class="card-title py-2">Green Energy Park Ben Guerir</h3>
+                        <p>
+                            <a href="https://www.greenenergypark.ma/" class="btn text-white primary-bg" target="_blank">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <img th:src="@{/img/ensao_logo.svg}" alt="" class="rounded-circle img-spon">
+                        <h3 class="card-title py-2">
+                            Mohammed First University Oujda
+                        </h3>
+                        <p>
+                            <a href="http://ensao.ump.ma/" class="btn text-white primary-bg" target="_blank">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- team ends -->
+<!-- Contact starts -->
+<section id="contact" class="contact section-padding">
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header text-center pb-5">
+                    <h2>Contact Us</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row flex-md-row flex-lg-row flex-column-reverse">
+            <div class="col-12 col-md-6 col-lg-8">
+                <h3>Contact Form</h3>
+                <form action="#" class="bg-light p-4 m-auto">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <input class="form-control" placeholder="Full Name" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <input class="form-control" placeholder="Email" required="" type="email">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <input class="form-control" placeholder="Subject" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                    <textarea class="form-control" placeholder="Message"
+                                              rows="3"></textarea>
+                            </div>
+                        </div><button class="btn text-white primary-bg btn-lg btn-block mt-3" type="submit">Send Now</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-3 contact-info ">
+                <h3>Contact Info</h3>
+                <div class="p-4">
+                    <p>International University of Rabat<br>1110 Sala Al Jadida ,Morocco.</p>
+                    <div ><span>Phone:</span> +212 (0)5 30 10 30 00</div>
+                    <div ><span>Email:</span> SmartAgri.proj@gmail.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- contact ends -->
+<!-- footer starts -->
+<footer class="p-2 text-center">
+    <div class="container" id="footerContent">
+        <!-- <p class="text-white">SmartAgri project @ 2023</p> -->
+    </div>
+</footer>
+<!-- footer ends -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
