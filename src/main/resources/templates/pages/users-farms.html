@@ -48,10 +48,7 @@
                                 fetch(`/farmsrest/users/${farmSelect}`)
                                     .then(response => response.json())
                                     .then(users => {
-                                        // Clear existing user table rows
                                         userTableBody.innerHTML = '';
-
-                                        // Populate the user table with data for the selected farm
                                         users.forEach(user => {
                                             const row = document.createElement('tr');
                                             row.innerHTML = `

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/template.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Visitor Home</title>
+    <style>
+        table thead  {
+            position: sticky;
+            top: 0;
+            background-color: #f1f1f1;
+            z-index: 1;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<div class="row" layout:fragment="content">
+    <button type="button" class="btn btn-primary" id="liveAlertBtn" style="width: 50%;margin-left: auto; margin-right: auto;" th:if="${notification != null}" th:text="${notification}"></button>
+    <div class="row mb-4">
+        <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-lg-6 col-7">
+                            <h6>Farms</h6>
+                            <p class="text-sm mb-0">
+                                <i class="fa fa-check text-info" aria-hidden="true"></i>
+                                <span class="font-weight-bold ms-1">Select a Farm</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-5 my-auto text-end">
+                            <div class="dropdown float-lg-end pe-4">
+                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                            <select class="form-control" id="farm" name="farm" required onchange="getsensorbyfarm()">
+                                <option th:id="0" th:value="null">none</option>
+                                <option  th:each="farm:${farms}"  th:value="${farm.idFarm}" th:text="${farm.name}"></option>
+                            </select>
+                        </div>
+                        <script type="text/javascript">
+                            function getsensorbyfarm(){
+                                const idfarm=document.getElementById("farm").value;
+                                const selectElement = document.getElementById("sensor");
+                                while (selectElement.options.length > 1) {
+                                    selectElement.remove(1);
+                                }
+                                fetch(`/sensorRes/sensorbyfarm/${idfarm}`)
+                                    .then(response => response.json())
+                                    .then(sensors => {
+                                        sensors.forEach(sonsor => {
+                                            console.log(sonsor.sensorCategory.description);
+                                            const newOption = document.createElement("option");
+                                            newOption.value = sonsor.idSensor; // Set the value attribute
+                                            newOption.text = sonsor.sensorCategory.description; // Set the text content
+                                            selectElement.appendChild(newOption);
+
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching sensor:', error);
+                                    });
+                            }
+
+
+                        </script>
+
+
+                        <!--this place for sensor selection that belongs to a farm-->
+                      <div class="col-lg-6 col-7">
+                          <h6>Sensor</h6>
+                          <p class="text-sm mb-0">
+                              <i class="fa fa-check text-info" aria-hidden="true"></i>
+                              <span class="font-weight-bold ms-1">Select a Sensor</span>
+                          </p>
+                      </div>
+                      <div class="col-lg-6 col-5 my-auto text-end">
+                          <div class="dropdown float-lg-end pe-4">
+                              <i class="fa fa-ellipsis-v text-secondary"></i>
+                          </div>
+                      </div>
+                      <div class="input-group input-group-static mb-4">
+                          <select class="form-control" id="sensor" name="sensor" required onchange="">
+                              <option th:id="0" th:value="null">none</option>
+                          </select>
+                      </div>
+                      <!--this place for date initial where the sensor created-->
+                           <div class="col-lg-6 col-7">
+                            <h6>Date</h6>
+                            <p class="text-sm mb-0">
+                                <i class="fa fa-check text-info" aria-hidden="true"></i>
+                                <span class="font-weight-bold ms-1">Start Date</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-5 my-auto text-end">
+                            <div class="dropdown float-lg-end pe-4">
+                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                            </div>
+                        </div>
+                        <div >
+                            <input type="date" id="startdate" name="trip-start"  min="2022-01-01" class="input-group date input-group-static mb-4 "/>
+                        </div>
+
+
+                        <div class="col-lg-6 col-7">
+                            <p class="text-sm mb-0">
+                                <i class="fa fa-check text-info" aria-hidden="true"></i>
+                                <span class="font-weight-bold ms-1">End Date</span>
+                            </p>
+                        </div>
+                        <div >
+                            <input type="date" id="enddate" name="trip-start"  min="2022-01-01" class="input-group date input-group-static mb-4 "/>
+                        </div>
+                        <button class="btn btn-primary"  style="width: 70%;margin-left: auto; margin-right: auto;" onclick="getdata();" >Search</button>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+                        <script type="text/javascript">
+
+                            let fetchedData = [];
+                            function getdata(){
+
+                                let hours=[];
+                                let datestart;
+                                let dateend;
+                                let sensorname;
+                                let value=[];
+                                const id_sensor_selected = document.getElementById("sensor").value;
+                                 datestart = document.getElementById("startdate").value;
+                                 dateend= document.getElementById("enddate").value;
+                                const userTableBody = document.getElementById('dataTable');
+                                if(id_sensor_selected==="" ||datestart==="" || dateend==="" ){
+                                    alert("No Data Present due to error ");
+                                }
+                                fetch(`/farm/data?id=${id_sensor_selected}&start=${datestart}&end=${dateend}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        fetchedData=data;
+                                        userTableBody.innerHTML = '';
+                                        var btnDown = document.getElementById("btndown");
+                                        btnDown.removeAttribute("hidden");
+                                        data.forEach(info => {
+                                            const row = document.createElement('tr');
+                                            const datePart = info.date.split('T')[0];
+                                            const date = new Date(info.date);
+                                            const hour = date.getHours();
+                                            hours.push(hour);
+                                            const minute = date.getMinutes();
+                                            value.push(info.value);
+                                            const timeString = `${hour}:${minute < 10 ? '0' : ''}${minute}`;
+                                            sensorname=info.sensor.sensorCategory.description;
+                                            row.innerHTML = `
+                                            <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">${info.sensor.farm.name}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${info.sensor.sensorCategory.description}</span>
+                                </td>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${info.sensor.unit} </span>
+                                </td>
+                                </td>
+                                           <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${datePart} </span>
+                                </td>
+                                 <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${timeString} </span>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <span class="text-xs font-weight-bold"> ${info.value} </span>
+                                </td>
+
+`;
+                                            userTableBody.appendChild(row);
+                                        });
+                                        let chartStatus = Chart.getChart("chart-line-tasks");
+                                        if (chartStatus !== undefined){
+                                            chartStatus.destroy();
+                                        }
+
+                                    if(datestart===dateend){
+                                        var data2 = {
+                                            labels: hours,
+                                            datasets: [
+                                                {
+                                                    label: sensorname+" By Hour",
+                                                    borderColor: "rgb(255, 255, 255)",
+                                                    data: value,
+                                                    fill: false,
+                                                },
+                                            ],
+                                        };
+                                        var canvas = document.getElementById("chart-line-tasks");
+                                        var ctx = canvas.getContext("2d");
+
+
+
+                                            var myLineChart = new Chart(ctx, {type: "line", data: data2,});
+
+
+
+                                    }
+
+
+
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching data:', error);
+                                    });
+                            }
+                            function getNestedProperty(obj, path) {
+                                const parts = path.split('.');
+                                return parts.reduce((o, key) => (o && o[key] !== 'undefined' ? o[key] : ''), obj);
+                            }
+                    function downloadExcel() {
+                        const selectedFields = ["farm.name", "sensor.sensorCategory.description", "sensor.unit", "date", "value",];
+                        const csvData = fetchedData.map((item) => selectedFields.map((field) => JSON.stringify(getNestedProperty(item, field))).join(','));
+                        const headerRow = selectedFields.map((field) => JSON.stringify(field)).join(',');
+                        csvData.unshift(headerRow);
+                        const csvContent = csvData.join('\n');
+                        function downloadCSV(csv) {
+                            const csvBlob = new Blob([csv], { type: 'text/csv' });
+                            const csvURL = URL.createObjectURL(csvBlob);
+                            const link = document.createElement('a');
+                            link.href = csvURL;
+                            link.download = 'data.csv';
+                            link.click();
+                        }
+                        downloadCSV(csvContent);
+                    }
+                        </script>
+
+
+                    </div>
+                </div>
+
+
+                <div class="card-body px-0 pb-2">
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <div class="table-responsive">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Farm</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Sensor</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Unit</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hour</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Value</th>
+                                </tr>
+                                </thead>
+                                <tbody id="dataTable">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success"  style="width: 70%;margin-left: auto; margin-right: auto;" id="btndown" hidden="hidden" onclick="downloadExcel();">Download excel</button>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6>To Display the line chart the start date must be the end date </h6>
+
+                                <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                                    <div class="chart">
+                                        <canvas id="chart-line-tasks" class="chart-canvas" height="400" width="400"></canvas>
+                                    </div>
+                                </div>
+                    </div>
+                <div class="card-body">
+                    <hr class="dark horizontal">
+                    <div class="d-flex ">
+                        <i class="material-icons text-sm my-auto me-1">schedule</i>
+                        <p class="mb-0 text-sm">just updated</p>
+                    </div>
+                </div>
+                 </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

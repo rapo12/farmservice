@@ -1,7 +1,7 @@
 package com.uir.smartAgri;
 
-import com.uir.smartAgri.Entities.Farm;
-import com.uir.smartAgri.Entities.User;
+import com.uir.smartAgri.Entities.*;
+import com.uir.smartAgri.Repositories.*;
 import com.uir.smartAgri.Services.FarmService;
 import com.uir.smartAgri.Services.UserService;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,6 +24,12 @@ public class SmartAgriApplication implements CommandLineRunner {
 	FarmService farmService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	SensorRepository sensorRepository;
+	@Autowired
+	SensorCategoryRepository sensorCategoryRepository;
+	@Autowired
+	SensorValuesRepository sensorValuesRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(SmartAgriApplication.class, args);
 	}
@@ -68,5 +75,30 @@ public class SmartAgriApplication implements CommandLineRunner {
 		f.setLatitude((float) (Math.random()*19));
 		f.setDescription("exemple of Deescription");
 		farmService.save(f);
+		
+		Stream.of("sensor1","sonsor2","sonsor3","sonsor4").forEach(sensor->{
+			SensorCategory sc = new SensorCategory();
+			sc.setReference("Temperature "+sensor);
+			sc.setDescription(sensor);
+			sensorCategoryRepository.save(sc);
+			Sensor s = new Sensor();
+			s.setFrequency((int) (Math.random()*12));
+			s.setUnit("C");
+			s.setTimestamp(new Date());
+			s.setSensorCategory(sc);
+			s.setFarm(f);
+			sensorRepository.save(s);
+
+			for(int i = 0;i<20;i++){
+				SensorValues sv = new SensorValues();
+				sv.setDate(new Date());
+				sv.setSensor(s);
+				sv.setValue((float) (Math.random()*19));
+				sensorValuesRepository.save(sv);
+			}
+
+
+		});
 	}
+
 }
